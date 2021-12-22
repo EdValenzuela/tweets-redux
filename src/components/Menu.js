@@ -23,7 +23,7 @@ const Menu = () => {
                     />
                     Tweets simulator Redux
                 </Navbar.Brand>
-                <Button variant='outline-success' onClick={()=>openCloseAddTweetModal(true)}>
+                <Button variant='success' onClick={()=>openCloseAddTweetModal(true)}>
                     Nuevo tweet
                 </Button>
             </Container>

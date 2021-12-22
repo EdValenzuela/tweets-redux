@@ -3,6 +3,10 @@ import { Form, Button, Alert } from 'react-bootstrap'
 import { useForm } from '../hooks/useForm'
 import { useDispatch, useSelector } from 'react-redux'
 import { validationFormAddTweetAction } from '../actions/validationsActions'
+import { addTweetAction } from '../actions/tweetsActions'
+import { openCloseAddTweetModalAction } from '../actions/modalsActions'
+import { v4 as uuidv4 } from "uuid"
+import moment from 'moment'
 
 const FormAddTweet = () => {
 
@@ -11,9 +15,11 @@ const FormAddTweet = () => {
         tweet: ''
     });
 
-    //Inicializaión del dispatch y ejecución de las acciones
+    //Inicialización del dispatch y ejecución de las acciones
     const dispatch = useDispatch();
     const errorForm = state => dispatch(validationFormAddTweetAction(state));
+    const addTweet = state => dispatch(addTweetAction(state));
+    const closeModal = state => dispatch(openCloseAddTweetModalAction(state));
 
     //Obtener estado de la valicación del formulario
     const errorFormValue = useSelector(state => state.validations.errorFormAddTweet);
@@ -26,6 +32,13 @@ const FormAddTweet = () => {
             return;
         }
         errorForm(false);
+        addTweet({
+            id: uuidv4(),
+            name,
+            tweet,
+            date: moment()
+        });
+        closeModal(false);
         console.log('Formulario enviado correctamente: ', formValue)
     }
 
