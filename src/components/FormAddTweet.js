@@ -1,6 +1,8 @@
 import React from 'react'
-import { Form, Button } from 'react-bootstrap'
+import { Form, Button, Alert } from 'react-bootstrap'
 import { useForm } from '../hooks/useForm'
+import { useDispatch, useSelector } from 'react-redux'
+import { validationFormAddTweetAction } from '../actions/validationsActions'
 
 const FormAddTweet = () => {
 
@@ -9,12 +11,21 @@ const FormAddTweet = () => {
         tweet: ''
     });
 
+    //Inicializaión del dispatch y ejecución de las acciones
+    const dispatch = useDispatch();
+    const errorForm = state => dispatch(validationFormAddTweetAction(state));
+
+    //Obtener estado de la valicación del formulario
+    const errorFormValue = useSelector(state => state.validations.errorFormAddTweet);
+
     const onSubmit = e => {
+        errorForm(true);
         e.preventDefault(); 
         if(!name || !tweet){
             console.log('todos los campos son obligatorios');
             return;
         }
+        errorForm(false);
         console.log('Formulario enviado correctamente: ', formValue)
     }
 
@@ -47,6 +58,13 @@ const FormAddTweet = () => {
                 <Button variant='primary' type='submit'>
                     Enviar tweet
                 </Button>
+                {
+                    errorFormValue && (
+                        <Alert variant='danger' className='mt-4'>
+                            Todos los campos son obligatorios
+                        </Alert>
+                    )
+                }
             </div>
         </Form>
     )
